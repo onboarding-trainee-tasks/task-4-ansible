@@ -1,0 +1,21 @@
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+    
+- name: Copy nginx configuration
+  template:
+    src: "{{ nginx_conf_template }}"
+    dest: "{{ nginx_conf_file_path }}"
+    owner: root
+    groop: "{{ root_group }}"
+    mode: 0644
+    validate: nginx -t -c %s
+  notify: Reload nginx
+
+- name: Ensure nginx service is enabled and running
+  service:
+    name: nginx
+    state: started
+    enabled: true

@@ -1,0 +1,5 @@
+- name: Install and provision nginx on web server
+  hosts: web_server
+  become: true
+  roles:
+    - role: nginx
