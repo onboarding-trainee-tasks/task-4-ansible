@@ -1,3 +1,7 @@
+nginx_server_name: coinops-d.pp.ua
+nginx_site_name: task-4
+nginx_document_root: /var/www/html
+
 nginx_conf_template: "null"
 nginx_conf_file_path: "null"
 root_group: "null"
