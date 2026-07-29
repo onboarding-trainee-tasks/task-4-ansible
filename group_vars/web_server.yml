@@ -1,0 +1,4 @@
+aws_region: "eu-central-1"
+site_host: "3.64.192.130"
+oauth2_proxy_client_id: "Ov23li8FsWarj3N1XATh"
+oauth2_proxy_github_user: "hrenchevskyi-d"

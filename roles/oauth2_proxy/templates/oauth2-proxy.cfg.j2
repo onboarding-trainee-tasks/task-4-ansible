@@ -1,0 +1,31 @@
+provider = "github"
+
+http_address = "127.0.0.1:4180"
+
+redirect_url = "http://{{ site_host }}/oauth2/callback"
+
+client_id = "{{ oauth2_proxy_client_id }}"
+client_secret = "{{ oauth2_proxy_client_secret }}"
+cookie_secret = "{{ oauth2_proxy_cookie_secret }}"
+
+email_domains = ["*"]
+
+github_users = [
+  "{{ oauth2_proxy_github_user }}"
+]
+
+upstreams = [
+  "static://202"
+]
+
+reverse_proxy = true
+
+trusted_proxy_ips = [
+  "127.0.0.1/32"
+]
+
+cookie_secure = false
+cookie_httponly = true
+cookie_samesite = "lax"
+
+skip_provider_button = true

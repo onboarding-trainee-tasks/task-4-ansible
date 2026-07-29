@@ -42,7 +42,7 @@
     state: absent
   notify:
     - Reload Nginx
-    - Validate nginx configuration
+    - Validate Nginx configuration
 
 - name: Ensure nginx service is enabled and running
   service:

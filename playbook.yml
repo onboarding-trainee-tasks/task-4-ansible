@@ -1,5 +1,29 @@
-- name: Install and provision nginx on web server
+- name: Configure protected web server
   hosts: web_server
   become: true
+
+  pre_tasks:
+    - name: Load OAuth secrets from SSM Parameter Store
+      set_fact:
+        oauth2_proxy_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-client-secret',
+              region=aws_region
+            )
+          }}
+
+        oauth2_proxy_cookie_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/cookie-secret',
+              region=aws_region
+            )
+          }}
+      no_log: true
+
   roles:
-    - role: nginx
+    - oauth2_proxy
+    - nginx

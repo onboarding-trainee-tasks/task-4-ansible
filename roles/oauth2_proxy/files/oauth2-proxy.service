@@ -1,0 +1,17 @@
+[Unit]
+Description=OAuth2 Proxy
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=oauth2-proxy
+Group=oauth2-proxy
+
+ExecStart=/usr/local/bin/oauth2-proxy \
+  --config=/etc/oauth2-proxy/oauth2-proxy.cfg
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
