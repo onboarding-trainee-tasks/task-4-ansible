@@ -10,7 +10,7 @@
             lookup(
               'amazon.aws.ssm_parameter',
               '/task4/oauth2/github-client-secret',
-              region=aws_region
+              region='eu-central-1'
             )
           }}
 
@@ -19,7 +19,7 @@
             lookup(
               'amazon.aws.ssm_parameter',
               '/task4/oauth2/cookie-secret',
-              region=aws_region
+              region='eu-central-1'
             )
           }}
       no_log: true

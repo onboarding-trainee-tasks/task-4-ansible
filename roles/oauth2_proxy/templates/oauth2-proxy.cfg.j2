@@ -2,7 +2,7 @@ provider = "github"
 
 http_address = "127.0.0.1:4180"
 
-redirect_url = "http://{{ site_host }}/oauth2/callback"
+redirect_url = "https://{{ app_host }}/oauth2/callback"
 
 client_id = "{{ oauth2_proxy_client_id }}"
 client_secret = "{{ oauth2_proxy_client_secret }}"
@@ -24,7 +24,11 @@ trusted_proxy_ips = [
   "127.0.0.1/32"
 ]
 
-cookie_secure = false
+whitelist_domains = [
+  "{{ app_host }}"
+]
+
+cookie_secure = true
 cookie_httponly = true
 cookie_samesite = "lax"
 

@@ -1,10 +1,23 @@
 server {
     listen 80 default_server;
-    listen [::]:80 default_server;
+    server_name _;
 
-    server_name {{ site_host }};
+    location = /health {
+        access_log off;
+        default_type text/plain;
+        return 200 "healthy\n";
+    }
 
-    root {{ nginx_document_root }};
+    location / {
+        return 404;
+    }
+}
+
+server {
+    listen 80;
+    server_name {{ app_host }};
+
+    root /var/www/html;
     index index.html;
 
     location /oauth2/ {
@@ -13,11 +26,13 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
         proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
 
         proxy_set_header X-Auth-Request-Redirect
-            $scheme://$host$request_uri;
+            https://{{ app_host }}$request_uri;
     }
 
     location = /oauth2/auth {
@@ -31,13 +46,15 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
         proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
         proxy_set_header X-Forwarded-Uri $request_uri;
     }
 
     location @oauth2_signin {
-        return 302 /oauth2/start?rd=$scheme://$host$request_uri;
+        return 302 /oauth2/start?rd=https://{{ app_host }}$request_uri;
     }
 
     location / {
@@ -45,5 +62,22 @@ server {
         error_page 401 = @oauth2_signin;
 
         try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen 80;
+    server_name {{ auth_host }};
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
     }
 }
