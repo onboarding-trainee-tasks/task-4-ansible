@@ -1,0 +1,64 @@
+- name: Install Docker and Docker Compose
+  apt:
+    name:
+      - docker.io
+      - docker-compose-v2
+    state: present
+    update_cache: true
+
+- name: Enable and start Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Create Keycloak import directory
+  file:
+    path: /opt/keycloak/import
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Create Keycloak realm configuration
+  template:
+    src: task4-realm.json.j2
+    dest: /opt/keycloak/import/task4-realm.json
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Create Keycloak Compose configuration
+  template:
+    src: compose.yml.j2
+    dest: /opt/keycloak/compose.yml
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+
+- name: Start Keycloak from clean configuration
+  community.docker.docker_compose_v2:
+    project_src: /opt/keycloak
+    state: present
+    recreate: always
+    pull: missing
+  no_log: true
+
+- name: Wait for Keycloak port
+  wait_for:
+    host: 127.0.0.1
+    port: 8080
+    delay: 5
+    timeout: 240
+
+- name: Wait for imported realm
+  uri:
+    url: >-
+      http://127.0.0.1:8080/realms/{{ keycloak_realm }}/.well-known/openid-configuration
+    method: GET
+    status_code: 200
+  register: keycloak_realm_check
+  retries: 30
+  delay: 5
+  until: keycloak_realm_check.status == 200

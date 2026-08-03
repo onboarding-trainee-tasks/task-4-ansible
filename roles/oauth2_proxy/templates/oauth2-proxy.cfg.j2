@@ -1,18 +1,26 @@
-provider = "github"
+provider = "keycloak-oidc"
+provider_display_name = "Keycloak"
 
 http_address = "127.0.0.1:4180"
 
+oidc_issuer_url = "https://{{ auth_host }}/realms/{{ keycloak_realm }}"
+
+client_id = "oauth2-proxy"
+client_secret = "{{ oauth2_proxy_client_secret }}"
+
 redirect_url = "https://{{ app_host }}/oauth2/callback"
 
-client_id = "{{ oauth2_proxy_client_id }}"
-client_secret = "{{ oauth2_proxy_client_secret }}"
-cookie_secret = "{{ oauth2_proxy_cookie_secret }}"
+scope = "openid profile email"
 
-email_domains = ["*"]
-
-github_users = [
-  "{{ oauth2_proxy_github_user }}"
+email_domains = [
+  "*"
 ]
+
+allowed_roles = [
+  "site-user"
+]
+
+code_challenge_method = "S256"
 
 upstreams = [
   "static://202"

@@ -3,13 +3,22 @@
   become: true
 
   pre_tasks:
-    - name: Load OAuth secrets from SSM Parameter Store
+    - name: Load authentication secrets from SSM
       set_fact:
+        keycloak_admin_password: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/keycloak/admin-password',
+              region='eu-central-1'
+            )
+          }}
+
         oauth2_proxy_client_secret: >-
           {{
             lookup(
               'amazon.aws.ssm_parameter',
-              '/task4/oauth2/github-client-secret',
+              '/task4/keycloak/oauth2-proxy-client-secret',
               region='eu-central-1'
             )
           }}
@@ -25,5 +34,6 @@
       no_log: true
 
   roles:
+    - keycloak
     - oauth2_proxy
     - nginx
