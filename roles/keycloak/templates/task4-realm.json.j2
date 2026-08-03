@@ -41,8 +41,8 @@
 
   "users": [
     {
-      "username": "{{ keycloak_test_username }}",
-      "email": "{{ keycloak_test_user_email }}",
+      "username": "{{ keycloak_username }}",
+      "email": "{{ keycloak_user_email }}",
       "firstName": "Test",
       "lastName": "User",
       "enabled": true,
@@ -51,7 +51,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "{{ keycloak_test_user_password }}",
+          "value": "{{ keycloak_user_password }}",
           "temporary": false
         }
       ],
@@ -71,7 +71,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "{{ keycloak_test_user_password }}",
+          "value": "{{ keycloak_user_password }}",
           "temporary": false
         }
       ]
