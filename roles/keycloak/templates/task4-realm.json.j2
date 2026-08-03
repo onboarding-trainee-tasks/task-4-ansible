@@ -1,0 +1,150 @@
+{
+  "realm": "{{ keycloak_realm }}",
+  "displayName": "Task 4 Realm",
+  "enabled": true,
+  "sslRequired": "external",
+
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "rememberMe": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+
+  "roles": {
+    "realm": [
+      {
+        "name": "site-user",
+        "description": "Allows access to the website"
+      },
+      {
+        "name": "site-admin",
+        "description": "Administrative role for the website"
+      }
+    ]
+  },
+
+  "groups": [
+    {
+      "name": "site-users",
+      "realmRoles": [
+        "site-user"
+      ]
+    },
+    {
+      "name": "site-admins",
+      "realmRoles": [
+        "site-user",
+        "site-admin"
+      ]
+    }
+  ],
+
+  "users": [
+    {
+      "username": "{{ keycloak_test_username }}",
+      "email": "{{ keycloak_test_user_email }}",
+      "firstName": "Test",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+
+      "credentials": [
+        {
+          "type": "password",
+          "value": "{{ keycloak_test_user_password }}",
+          "temporary": false
+        }
+      ],
+
+      "groups": [
+        "/site-users"
+      ]
+    },
+    {
+      "username": "{{ keycloak_no_role_username }}",
+      "email": "{{ keycloak_no_role_email }}",
+      "firstName": "Test",
+      "lastName": "No Role",
+      "enabled": true,
+      "emailVerified": true,
+
+      "credentials": [
+        {
+          "type": "password",
+          "value": "{{ keycloak_test_user_password }}",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+
+  "clients": [
+    {
+      "clientId": "oauth2-proxy",
+      "name": "OAuth2 Proxy",
+      "description": "OIDC client used by OAuth2 Proxy",
+
+      "enabled": true,
+      "protocol": "openid-connect",
+
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${OAUTH2_PROXY_CLIENT_SECRET}",
+
+      "publicClient": false,
+      "bearerOnly": false,
+
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+
+      "frontchannelLogout": true,
+      "fullScopeAllowed": true,
+
+      "rootUrl": "https://{{ app_host }}",
+      "baseUrl": "https://{{ app_host }}",
+
+      "redirectUris": [
+        "https://{{ app_host }}/oauth2/callback"
+      ],
+
+      "webOrigins": [
+        "https://{{ app_host }}"
+      ],
+
+      "attributes": {
+        "post.logout.redirect.uris": "https://{{ app_host }}/*"
+      },
+
+      "protocolMappers": [
+        {
+          "name": "oauth2-proxy-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+
+          "config": {
+            "included.client.audience": "oauth2-proxy",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "realm-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ]
+}
