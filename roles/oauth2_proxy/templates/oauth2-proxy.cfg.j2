@@ -6,7 +6,9 @@ http_address = "127.0.0.1:4180"
 oidc_issuer_url = "https://{{ auth_host }}/realms/{{ keycloak_realm }}"
 
 client_id = "oauth2-proxy"
-client_secret = "{{ oauth2_proxy_client_secret }}"
+client_secret = {{ oauth2_proxy_client_secret | to_json }}
+
+cookie_secret = {{ oauth2_proxy_cookie_secret | to_json }}
 
 redirect_url = "https://{{ app_host }}/oauth2/callback"
 
