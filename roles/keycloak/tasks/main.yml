@@ -18,7 +18,7 @@
     state: directory
     owner: root
     group: root
-    mode: "0700"
+    mode: "0750"
 
 - name: Create Keycloak realm configuration
   template:
@@ -26,7 +26,8 @@
     dest: /opt/keycloak/import/task4-realm.json
     owner: root
     group: root
-    mode: "0600"
+    mode: "0640"
+  no_log: true
 
 - name: Create Keycloak Compose configuration
   template:
@@ -44,13 +45,6 @@
     recreate: always
     pull: missing
   no_log: true
-
-- name: Wait for Keycloak port
-  wait_for:
-    host: 127.0.0.1
-    port: 8080
-    delay: 5
-    timeout: 240
 
 - name: Wait for imported realm
   uri:
