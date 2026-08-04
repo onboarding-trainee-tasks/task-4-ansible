@@ -164,8 +164,8 @@
       "firstBrokerLoginFlowAlias": "first broker login",
 
       "config": {
-        "clientId": "{{ github_client_id }}",
-        "clientSecret": "${GITHUB_CLIENT_SECRET}",
+        "clientId": {{ github_client_id | to_json }},
+        "clientSecret": {{ github_client_secret | to_json }},
         "defaultScope": "user:email",
         "syncMode": "IMPORT",
         "githubJsonFormat": "false"

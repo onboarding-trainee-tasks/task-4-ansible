@@ -4,44 +4,35 @@
 
   pre_tasks:
     - name: Load authentication secrets from SSM
-      set_fact:
-        keycloak_admin_password: >-
-          {{
-            lookup(
-              'amazon.aws.ssm_parameter',
-              '/task4/keycloak/admin-password',
-              region='eu-central-1'
-            )
-          }}
-
+      ansible.builtin.set_fact:
         oauth2_proxy_client_secret: >-
           {{
             lookup(
               'amazon.aws.ssm_parameter',
               '/task4/keycloak/oauth2-proxy-client-secret',
-              region='eu-central-1'
+              region=aws_region
             )
           }}
-
+  
         oauth2_proxy_cookie_secret: >-
           {{
             lookup(
               'amazon.aws.ssm_parameter',
               '/task4/oauth2/cookie-secret',
-              region='eu-central-1'
+              region=aws_region
             )
           }}
-
+  
         github_client_secret: >-
           {{
             lookup(
               'amazon.aws.ssm_parameter',
               '/task4/oauth2/github-client-secret',
-              region='eu-central-1'
+              region=aws_region
             )
-          }}  
+          }}
       no_log: true
-
+  
   roles:
     - keycloak
     - oauth2_proxy
