@@ -36,6 +36,22 @@
     state: link
   notify: Reload Nginx
 
+- name: Create direct GitHub website directory
+  file:
+    path: "{{ nginx_github_document_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy direct GitHub HTML page
+  copy:
+    src: index-github.html
+    dest: "{{ nginx_github_document_root }}/index.html"
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: Disable default Nginx site
   file:
     path: /etc/nginx/sites-enabled/default

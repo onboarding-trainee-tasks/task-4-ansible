@@ -49,6 +49,24 @@
               region='eu-central-1'
             )
           }}
+        
+        github_second_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-second-client-secret',
+              region=aws_region
+            )
+          }}
+
+        github_second_cookie_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-second-cookie-secret',
+              region=aws_region
+            )
+          }}
       no_log: true
 
   roles:

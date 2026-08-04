@@ -1,2 +1,3 @@
 nginx_site_name: task-4
 nginx_document_root: /var/www/html
+nginx_github_document_root: /var/www/github

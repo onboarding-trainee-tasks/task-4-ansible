@@ -46,7 +46,9 @@
     group: root
     mode: "0755"
     remote_src: true
-  notify: Restart oauth2-proxy
+  notify:
+    - Restart oauth2-proxy
+    - Restart oauth2-proxy-github
 
 - name: Create oauth2-proxy configuration directory
   file:
@@ -76,8 +78,45 @@
   notify: Restart oauth2-proxy
 
 - name: Enable and start oauth2-proxy
-  systemd:
+  service:
     name: oauth2-proxy
+    state: started
+    enabled: true
+    daemon_reload: true
+
+#
+
+- name: Create direct GitHub OAuth2 Proxy configuration
+  template:
+    src: github.cfg.j2
+    dest: /etc/oauth2-proxy/github.cfg
+    owner: root
+    group: oauth2-proxy
+    mode: "0640"
+  no_log: true
+  notify: Restart oauth2-proxy-github
+
+- name: Install direct GitHub OAuth2 Proxy systemd service
+  copy:
+    src: oauth2-proxy-github.service
+    dest: /etc/systemd/system/oauth2-proxy-github.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart oauth2-proxy-github
+
+- name: Validate direct GitHub OAuth2 Proxy configuration
+  command:
+    cmd: >-
+      /usr/local/bin/oauth2-proxy
+      --config=/etc/oauth2-proxy/github.cfg
+      --config-test
+  changed_when: false
+  no_log: true
+
+- name: Enable and start direct GitHub OAuth2 Proxy
+  service:
+    name: oauth2-proxy-github
     state: started
     enabled: true
     daemon_reload: true

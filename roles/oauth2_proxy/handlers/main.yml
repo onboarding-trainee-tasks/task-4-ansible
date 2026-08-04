@@ -3,3 +3,9 @@
     name: oauth2-proxy
     state: restarted
     daemon_reload: true
+
+- name: Restart oauth2-proxy-github
+  service:
+    name: oauth2-proxy-github
+    state: restarted
+    daemon_reload: true

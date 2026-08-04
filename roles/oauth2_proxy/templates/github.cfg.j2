@@ -1,0 +1,39 @@
+provider = "github"
+provider_display_name = "GitHub Oauth2"
+
+http_address = "127.0.0.1:4181"
+
+client_id = {{ github_second_client_id | to_json }}
+client_secret = {{ github_second_client_secret | to_json }}
+
+cookie_secret = {{ github_second_cookie_secret | to_json }}
+cookie_name = "_oauth2_proxy_direct_github"
+cookie_path = "/"
+
+redirect_url = "https://{{ github_app_host }}/oauth2/callback"
+
+email_domains = [
+  "*"
+]
+
+github_users = {{ github_allowed_users | to_json }}
+
+upstreams = [
+  "static://202"
+]
+
+reverse_proxy = true
+
+trusted_proxy_ips = [
+  "127.0.0.1/32"
+]
+
+whitelist_domains = [
+  "{{ github_app_host }}"
+]
+
+cookie_secure = true
+cookie_httponly = true
+cookie_samesite = "lax"
+
+skip_provider_button = true
