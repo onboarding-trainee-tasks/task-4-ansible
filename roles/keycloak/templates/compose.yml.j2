@@ -11,11 +11,12 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: "{{ keycloak_admin_username }}"
       KC_BOOTSTRAP_ADMIN_PASSWORD: "{{ keycloak_admin_password }}"
-
+    
       KC_HOSTNAME: "https://{{ auth_host }}"
       KC_PROXY_HEADERS: "xforwarded"
-
+    
       OAUTH2_PROXY_CLIENT_SECRET: "{{ oauth2_proxy_client_secret }}"
+      GITHUB_CLIENT_SECRET: "{{ github_client_secret }}"
 
     ports:
       - "127.0.0.1:8080:8080"

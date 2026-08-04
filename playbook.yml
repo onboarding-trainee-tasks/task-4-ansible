@@ -31,6 +31,15 @@
               region='eu-central-1'
             )
           }}
+
+        github_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-client-secret',
+              region='eu-central-1'
+            )
+          }}  
       no_log: true
 
   roles:

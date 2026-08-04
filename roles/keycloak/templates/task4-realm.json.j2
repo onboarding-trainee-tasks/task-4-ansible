@@ -146,5 +146,43 @@
         }
       ]
     }
+  ],
+
+  "identityProviders": [
+    {
+      "alias": "github",
+      "displayName": "GitHub",
+      "providerId": "github",
+      "enabled": true,
+
+      "trustEmail": true,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+
+      "firstBrokerLoginFlowAlias": "first broker login",
+
+      "config": {
+        "clientId": "{{ github_client_id }}",
+        "clientSecret": "${GITHUB_CLIENT_SECRET}",
+        "defaultScope": "user:email",
+        "syncMode": "IMPORT",
+        "githubJsonFormat": "false"
+      }
+    }
+  ],
+
+  "identityProviderMappers": [
+    {
+      "name": "github-site-users",
+      "identityProviderAlias": "github",
+      "identityProviderMapper": "oidc-hardcoded-group-idp-mapper",
+
+      "config": {
+        "syncMode": "INHERIT",
+        "group": "/site-users"
+      }
+    }
   ]
 }

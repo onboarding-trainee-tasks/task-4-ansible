@@ -2,8 +2,7 @@ aws_region: "eu-central-1"
 app_host: "app.coinops-d.pp.ua"
 auth_host: "auth.coinops-d.pp.ua"
 
-oauth2_proxy_client_id: "Ov23li8FsWarj3N1XATh"
-oauth2_proxy_github_user: "hrenchevskyi-d"
+github_client_id: "Ov23li8FsWarj3N1XATh"
 
 keycloak_realm: "task4"
 keycloak_admin_username: "admin"
