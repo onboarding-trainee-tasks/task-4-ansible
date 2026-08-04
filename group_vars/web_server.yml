@@ -3,6 +3,7 @@ app_host: "app.coinops-d.pp.ua"
 auth_host: "auth.coinops-d.pp.ua"
 
 github_client_id: "Ov23li8FsWarj3N1XATh"
+gitlab_client_id: "375a5a70fc888b01688caa7d0133c678a639193b9683ad474be2603f5882c477"
 
 keycloak_realm: "task4"
 keycloak_admin_username: "admin"

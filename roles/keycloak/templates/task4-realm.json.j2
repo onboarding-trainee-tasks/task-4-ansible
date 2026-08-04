@@ -164,11 +164,32 @@
       "firstBrokerLoginFlowAlias": "first broker login",
 
       "config": {
-        "clientId": {{ github_client_id | to_json }},
-        "clientSecret": {{ github_client_secret | to_json }},
+        "clientId": "{{ github_client_id }}",
+        "clientSecret": "${GITHUB_CLIENT_SECRET}",
         "defaultScope": "user:email",
         "syncMode": "IMPORT",
         "githubJsonFormat": "false"
+      }
+    },
+    {
+      "alias": "gitlab",
+      "displayName": "GitLab",
+      "providerId": "gitlab",
+      "enabled": true,
+
+      "trustEmail": true,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+
+      "firstBrokerLoginFlowAlias": "first broker login",
+
+      "config": {
+        "clientId": "{{ gitlab_client_id }}",
+        "clientSecret": "${GITLAB_CLIENT_SECRET}",
+        "defaultScope": "openid",
+        "syncMode": "IMPORT"
       }
     }
   ],
@@ -178,7 +199,17 @@
       "name": "github-site-users",
       "identityProviderAlias": "github",
       "identityProviderMapper": "oidc-hardcoded-group-idp-mapper",
-
+  
+      "config": {
+        "syncMode": "INHERIT",
+        "group": "/site-users"
+      }
+    },
+    {
+      "name": "gitlab-site-users",
+      "identityProviderAlias": "gitlab",
+      "identityProviderMapper": "oidc-hardcoded-group-idp-mapper",
+  
       "config": {
         "syncMode": "INHERIT",
         "group": "/site-users"
