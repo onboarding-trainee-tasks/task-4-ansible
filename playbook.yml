@@ -14,6 +14,15 @@
             )
           }}
 
+        keycloak_user_password: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/keycloak/test-user-password',
+              region=aws_region
+            )
+          }}
+  
         oauth2_proxy_client_secret: >-
           {{
             lookup(

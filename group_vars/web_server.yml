@@ -16,7 +16,6 @@ keycloak_admin_username: "admin"
 
 keycloak_username: "user"
 keycloak_user_email: "user@coinops-d.pp.ua"
-keycloak_user_password: "5jjb456hl54ver3"
 
 keycloak_no_role_username: "no-role"
 keycloak_no_role_email: "no-role@coinops-d.pp.ua"
