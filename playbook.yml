@@ -1,5 +1,84 @@
-- name: Install and provision nginx on web server
+- name: Configure protected web server
   hosts: web_server
   become: true
+
+  pre_tasks:
+    - name: Load authentication secrets from SSM
+      set_fact:
+        keycloak_admin_password: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/keycloak/admin-password',
+              region='eu-central-1'
+            )
+          }}
+
+        keycloak_user_password: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/keycloak/test-user-password',
+              region=aws_region
+            )
+          }}
+  
+        oauth2_proxy_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/keycloak/oauth2-proxy-client-secret',
+              region=aws_region
+            )
+          }}
+
+        oauth2_proxy_cookie_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/cookie-secret',
+              region=aws_region
+            )
+          }}
+
+        github_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-client-secret',
+              region=aws_region
+            )
+          }}
+
+        gitlab_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/gitlab-client-secret',
+              region='eu-central-1'
+            )
+          }}
+        
+        github_second_client_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-second-client-secret',
+              region=aws_region
+            )
+          }}
+
+        github_second_cookie_secret: >-
+          {{
+            lookup(
+              'amazon.aws.ssm_parameter',
+              '/task4/oauth2/github-second-cookie-secret',
+              region=aws_region
+            )
+          }}
+      no_log: true
+
   roles:
-    - role: nginx
+    - keycloak
+    - oauth2_proxy
+    - nginx
