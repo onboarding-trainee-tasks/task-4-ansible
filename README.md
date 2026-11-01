@@ -8,7 +8,8 @@ This repository configures a web server through its private EC2 address using An
 - Web server at private IP `10.10.1.111` (currently in a public subnet but protected by Security Groups), reachable from controller via SSH; private key at `/home/ubuntu/.ssh/ansible_ssh_private_key` (mode `0600`).
 - IAM instance profile on controller with `ssm:GetParameter` access to required SSM SecureString parameters; Python AWS SDK (`boto3`/`botocore`) available.
 - `amazon.aws` and `community.docker` Ansible collections as declared in `requirements.yml`.
-- For the final Packer-based deployment, Web Server AMI pre-installs Nginx, Docker/Compose and OAuth2 Proxy 7.15.3. Until then, the current Ansible roles still install these dependencies on Ubuntu.
+- The Web Server AMI must have Nginx, Docker, Docker Compose v2,
+and OAuth2 Proxy 7.15.3 preinstalled. Ansible manages service configuration, Keycloak realm import, systemd services, and Nginx virtual hosts. It does not install these base packages.
 
 ## Run from Ansible controller
 
