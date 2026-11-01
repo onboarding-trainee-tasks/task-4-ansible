@@ -1,11 +1,3 @@
-- name: Install Docker and Docker Compose
-  apt:
-    name:
-      - docker.io
-      - docker-compose-v2
-    state: present
-    update_cache: true
-
 - name: Enable and start Docker
   service:
     name: docker
